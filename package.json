@@ -1,0 +1,45 @@
+{
+  "name": "axa-nodejs-santa",
+  "version": "0.0.1",
+  "description": "Santa is excepting gift requests!",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "start:nodemon": "./node_modules/nodemon/bin/nodemon.js",
+    "start:prod": "npm run build && node ./dist/src/server.js",
+    "build": "npx tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafazafar/axa-nodejs-challenge.git"
+  },
+  "keywords": [
+    "axa",
+    "santa",
+    "coding",
+    "challenge",
+    "zafar"
+  ],
+  "author": "Ahmad Zafar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rafazafar/axa-nodejs-challenge/issues"
+  },
+  "homepage": "https://github.com/rafazafar/axa-nodejs-challenge#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-winston": "^4.2.0",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.1",
+    "winston": "^3.8.2",
+    "zod": "^3.20.6"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.14.0",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}
