@@ -1,44 +1,35 @@
 import * as z from "zod";
-import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 
-// Load environment variables from .env file
-dotenv.config();
+import env from "./env";
 
 // Define SMTP configuration schema
 const smtpConfigSchema = z.object({
   host: z.string(),
-  port: z.number(),
+  port: z.coerce.number(),
   auth: z.object({
     user: z.string().email(),
     pass: z.string(),
   }),
+  secure: z.coerce.boolean().default(false),
 });
 
 // Load SMTP configuration from environment variables
 const smtpConfig = {
-  host: process.env.SMTP_HOST || "",
-  port: process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 0,
+  host: env.SMTP_HOST,
+  port: env.SMTP_PORT,
   auth: {
-    user: process.env.SMTP_USER || "",
-    pass: process.env.SMTP_PASS || "",
+    user: env.SMTP_USERNAME,
+    pass: env.SMTP_PASSWORD,
   },
+  secure: env.SMTP_SECURE,
 };
 
-// Validate SMTP configuration against schema
-try {
-  smtpConfigSchema.parse(smtpConfig);
-  console.log("SMTP configuration is valid.");
-} catch (err) {
-  console.log(`SMTP configuration is invalid: ${err.message}`);
-}
+console.table(smtpConfig);
 
-const transporter = nodemailer.createTransport({
-  port: 465, // true for 465, false for other ports
-  host: "smtp.gmail.com",
-  auth: {
-    user: "youremail@gmail.com",
-    pass: "password",
-  },
-  secure: true,
-});
+// Validate SMTP configuration against schema
+const config = smtpConfigSchema.parse(smtpConfig);
+
+const transporter = nodemailer.createTransport(config);
+
+export default transporter;

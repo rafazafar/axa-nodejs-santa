@@ -1,15 +1,13 @@
 import winston from "winston";
 import expressWinston from "express-winston";
-import { Request, Response } from "express";
 
 // Winston logger configuration
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
-  defaultMeta: { service: "my-express-app" },
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "combined.log" }),
+    new winston.transports.File({ filename: "./logs/combined.log" }),
   ],
 });
 
@@ -17,7 +15,7 @@ const logger = winston.createLogger({
 export const requestLogger = expressWinston.logger({
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "combined.log" }),
+    new winston.transports.File({ filename: "./logs/requests.log" }),
   ],
   format: winston.format.combine(
     winston.format.colorize(),
@@ -33,7 +31,7 @@ export const requestLogger = expressWinston.logger({
 export const errorLogger = expressWinston.errorLogger({
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "error.log" }),
+    new winston.transports.File({ filename: "./logs/error.log" }),
   ],
   format: winston.format.combine(
     winston.format.colorize(),
@@ -41,8 +39,8 @@ export const errorLogger = expressWinston.errorLogger({
   ),
 });
 
-// Express error handler
-export const errorHandler = (err: any, req: Request, res: Response) => {
-  logger.error(err.stack);
-  res.status(500).send("Internal server error.");
+export default {
+  logger,
+  errorLogger,
+  requestLogger,
 };
