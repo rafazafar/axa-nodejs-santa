@@ -30,7 +30,7 @@ const processQueue = () => {
     transporter.sendMail(mailOptions, (err) => {
       if (err) console.log(err);
     });
-    setTimeout(processQueue, 1000 * 60);
+    setTimeout(processQueue, 1000 * 15);
   } else {
     isProcessing = false;
   }
@@ -92,7 +92,7 @@ export const addRequestToQueue = async (
     const requestsText = `Child's username: ${userid}\nChild's address: ${userProfile.address}\nRequest: ${wish}\n`;
     const mailOptions = {
       from: "do_not_reply@northpole.com",
-      to: "alexandria.spinka@ethereal.email",
+      to: "santa@northpole.com",
       subject: `New request from ${userid}`,
       text: requestsText,
     };
