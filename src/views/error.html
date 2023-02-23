@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Oh no</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .form-container {
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 5px;
+        padding: 2rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      }
+      .back-button {
+        display: inline-block;
+        padding: 1rem 1rem;
+        border:rgba(0, 0, 0, 1)
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h1 id="error-message">There was an error</h1>
+      <a href="/" class="back-button" type="button">Back</button>
+    </div>
+  </body>
+  <footer>
+    <script>
+      //get the error message from the server
+      const errorMessage = new URLSearchParams(window.location.search).get(
+        "msg"
+      );
+      //show the error message in .error-message
+      document.getElementById("error-message").innerText = errorMessage;
+    </script>
+  </footer>
+</html>

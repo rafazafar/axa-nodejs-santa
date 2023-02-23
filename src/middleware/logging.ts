@@ -1,46 +1,26 @@
 import winston from "winston";
 import expressWinston from "express-winston";
 
-// Winston logger configuration
-export const logger = winston.createLogger({
+const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "./logs/combined.log" }),
+    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
+    new winston.transports.File({ filename: "logs/combined.log" }),
   ],
 });
 
-// Express middleware for logging incoming requests
-export const requestLogger = expressWinston.logger({
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: "./logs/requests.log" }),
-  ],
-  format: winston.format.combine(
-    winston.format.colorize(),
-    winston.format.json()
-  ),
+const winstonLogger = expressWinston.logger({
+  winstonInstance: logger,
   meta: true,
-  msg: "HTTP {{req.method}} {{req.url}}",
-  expressFormat: true,
-  colorize: true,
+  msg: "{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
 });
 
-// Express middleware for logging errors
-export const errorLogger = expressWinston.errorLogger({
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: "./logs/error.log" }),
-  ],
-  format: winston.format.combine(
-    winston.format.colorize(),
-    winston.format.json()
-  ),
+const winstonErrorLogger = expressWinston.errorLogger({
+  winstonInstance: logger,
+  meta: true,
+  msg: "{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
 });
 
-export default {
-  logger,
-  errorLogger,
-  requestLogger,
-};
+export { winstonLogger, winstonErrorLogger };

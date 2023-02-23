@@ -1,25 +1,29 @@
 import express from "express";
-import type { Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 import env from "./configs/env";
-import { requestLogger, logger } from "./middleware/logging";
-import emailRouter from "./controllers/email";
+import rootRouter from "./routes/index";
+import { winstonLogger, winstonErrorLogger } from "./middleware/logging";
 
 const app = express();
 
-// Express middleware for logging incoming requests
-// app.use(requestLogger);
-
 // Express middleware for parsing JSON request bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// add routers here
-app.use("/", emailRouter);
+// Serve static folder
+app.use(express.static("public"));
 
-// Express error handler
-app.use((err: any, res: Response) => {
-  logger.error(err.stack);
-  res.status(500).send("Internal server error.");
+// Routers
+app.use("/", rootRouter);
+
+// Express Logging middleware
+app.use(winstonLogger);
+app.use(winstonErrorLogger);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).send("Internal Server Error");
 });
 
 app.listen(env.PORT, () => {

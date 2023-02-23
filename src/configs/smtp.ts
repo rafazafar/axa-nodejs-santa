@@ -25,8 +25,6 @@ const smtpConfig = {
   secure: env.SMTP_SECURE,
 };
 
-console.table(smtpConfig);
-
 // Validate SMTP configuration against schema
 const config = smtpConfigSchema.parse(smtpConfig);
 
