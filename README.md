@@ -1,80 +1,69 @@
-# IMPORTANT! READ before starting
+# Nodejs Santa App
 
-By default for anonymous users (non logged in), your code and app will only remain on glitch.com for 5 days.
-In order to not lose your challenge, please create a glitch.com account and log in to glitch.com before proceeding.
+A minimal Nodejs app for AXA Coding Challenge.
 
-The following README contains instructions to guide you through the coding challenge, please read them carefully.
+Santa is now accepting gift requests ! Woohoo!
 
-# nodejs coding challenge:
+Multiple wishes will be sent at 15 second intervals until there are no wishes left.
 
-## How to create and submit your app using glitch
+## Screenshot
 
-0. **Login to glitch**: make sure you are logged in to glitch.com
+To be added
 
-1. **Clone**: Go to this URL: https://glitch.com/~nodejs-santa-app and click the `Remix your own` button to clone the code. This will copy all the code to a new, randomly generated URL (e.g. https://glitch.com/edit/#!/capable-toothpaste). This is your URL to code on, no other candidates will have this URL.
+## Requirements
 
-2. **Code**: You can edit the code directly in the Glitch editor or use your editor of choice (VSCode, Sublime, etc) and copy paste the files into Glitch. Git import and export is also available in the Tools menu on the bottom left. How you edit the code is entirely up to you, so long as your finished work is viewable at the URL created in the previous step.
+- **Node:** 18.x
 
-> **NOTE**: Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+## Environment Variables
 
-4. **Turn in**: When you finish coding, send your URL to us so we can review your code.
+To run this project, you will need to add the following environment variables to your .env file. View `.env.example` file to get started.
 
-## Objectives overview:
+`SMTP_USERNAME` : SMTP account username
 
-The webapp should display a form for children to enter their id and a free text message to santa.
+`SMTP_PASSWORD` : SMTP account password
 
-When submitting the form, the server should check:
+`SMTP_HOST` : SMTP host (eg. smtp.ethereal.email )
 
-1.  that the child is registered
-2.  that the child is less than 10 years old.
-    To this purpose, the server can fetch user and profiles data in JSON format from:
+`SMTP_PORT` : SMTP port (eg. 587 )
 
-- https://raw.githubusercontent.com/alj-devops/santa-data/master/userProfiles.json
-- https://raw.githubusercontent.com/alj-devops/santa-data/master/users.json
+## Run Locally
 
-If the child is not registered (no match for the user id) or more than 10years old, the webapp should display a basic error page with an error message explaining the problem.\
-If the child is registered and less than 10 years old, the server should show a page indicating that the request has been received.
+Clone the project
 
-Every 15seconds, the server should send an email with information on all pending (not yet sent) requests including:
+Install dependencies
 
-- child username (eg. charlie.brown)
-- child's address (eg. 219-1130, Ikanikeisaiganaibaai, Musashino-shi, Tokyo)
-- request free text as was input in the form
+```bash
+npm install
+```
 
-Email sender should be set as do_not_reply@northpole.com, and sent to santa@northpole.com
+Run development server ( watches for file changes )
 
-## tips and detailed instructions:
+```bash
+npm run dev
+```
 
-- somebody started to work on the app, but left it unfinished. It is up to you to complete it. You are allowed to restart from scratch if you prefer.
-- the look and feel of the application for this challenge is not the priority. The pages/email do not need to look good, as long as they convey the information effectively.
-- you should fetch the JSON data at every form submission (consider it as an API)
-- for the sake of the challenge, you can keep the requests in-memory only
-- you are encouraged to select and use npm packages as needed (you can add packages by editing package.json, or using `npm install` from the glitch console)
-- to get an smtp server for emails, go to https://ethereal.email/ and click "Create Ethereal Account".\
-  This will give you an account (take note of your username and pwd if you need to re-logon later) and smtp server (actual emails do not get delivered).\
-  Go to https://ethereal.email/messages to see the emails that have been received by the smtp server.
+OR
 
-## Some things we will look for in your submission
+Run production server
 
-- Code quality (readability, use of modern syntax...)
-- Does the app work as designed (cf. objectives overview)
-- App architecture (folder structure, configuration management...)
+```bash
+npm start
+```
 
-## tips on usage of glitch
+Visit site at [http://localhost:3000](http://localhost:3000)
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
-When your app is running, you can access logs and console using the "Tools" button at the bottom left.
+## API Reference
 
-## Your Project
+#### Send a wish to Santa
 
-On the front-end,
+```http
+  POST /wish
+```
 
-- edit `public/client.js`, `public/style.css` and `views/index.html`
-- drag in `assets`, like images or music, to add them to your project
+## License
 
-On the back-end,
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.
 
-- your app starts at `server.js`
-- add frameworks and packages in `package.json`
-- safely store app secrets in `.env` (nobody can see this but you and people you invite)
-- app uses node8 by default, it is possible to update the version of nodejs used: https://glitch.com/help/node/
+## Disclaimer
+
+This software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
