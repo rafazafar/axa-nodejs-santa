@@ -8,7 +8,7 @@ Multiple wishes will be sent at 15 second intervals until there are no wishes le
 
 ## Screenshot
 
-To be added
+![Screenshot](https://i.ibb.co/P1BdmW2/Screenshot-2023-02-24-at-2-18-17.png)
 
 ## Requirements
 
