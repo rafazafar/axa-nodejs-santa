@@ -1,5 +1,5 @@
 import transporter from "../configs/smtp";
-import https from "https";
+import fetch from "node-fetch";
 import { NextFunction, Request, Response } from "express";
 import dayjs from "dayjs";
 
@@ -20,7 +20,7 @@ interface EmailOptions {
   text: string;
 }
 
-const emailQueue: EmailOptions[] = [];
+export const emailQueue: EmailOptions[] = [];
 let isProcessing = false;
 
 const processQueue = () => {
@@ -42,36 +42,17 @@ export const addRequestToQueue = async (
   next: NextFunction
 ) => {
   try {
-    const usersDataSource =
-      "https://raw.githubusercontent.com/alj-devops/santa-data/master/users.json";
-    const userProfilesDataSource =
-      "https://raw.githubusercontent.com/alj-devops/santa-data/master/userProfiles.json";
+    const usersDataFetch: Promise<User[]> = fetch(
+      "https://raw.githubusercontent.com/alj-devops/santa-data/master/users.json"
+    ).then(async (res) => await res.json());
+    const userProfilesDataFetch: Promise<UserProfile[]> = fetch(
+      "https://raw.githubusercontent.com/alj-devops/santa-data/master/userProfiles.json"
+    ).then(async (res) => await res.json());
 
-    const [users, userProfiles]: [User[], UserProfile[]] = await Promise.all(
-      [usersDataSource, userProfilesDataSource].map(
-        (url: string): Promise<string> =>
-          new Promise<string>((resolve, reject) => {
-            https
-              .get(url, (response) => {
-                let data = "";
-                response.on("data", (chunk) => {
-                  data += chunk;
-                });
-                response.on("end", () => {
-                  resolve(data);
-                });
-              })
-              .on("error", (error) => {
-                console.error(error);
-                reject(error);
-              });
-          })
-      )
-    ).then((results: string[]) => {
-      const users: User[] = JSON.parse(results[0]);
-      const userProfiles: UserProfile[] = JSON.parse(results[1]);
-      return [users, userProfiles];
-    });
+    const [users, userProfiles]: [User[], UserProfile[]] = await Promise.all([
+      usersDataFetch,
+      userProfilesDataFetch,
+    ]);
 
     const { userid, wish } = req.body;
 
@@ -80,6 +61,7 @@ export const addRequestToQueue = async (
     if (!foundUser) {
       return res.redirect("/error?msg=Invalid username");
     }
+
     // Check if child is less than 10 years old by using uid.
     const userProfile = userProfiles.find(
       (profile) => profile.userUid === foundUser.uid

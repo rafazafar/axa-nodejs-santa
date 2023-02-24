@@ -1,5 +1,14 @@
 node_modules
+
+# Secrets
 .env
+
+# Build
 dist
+
+# Logs
 logs/*
-```
+
+# Tests
+coverage
+jest.config.js
